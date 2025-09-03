@@ -12,4 +12,7 @@
 
 ###
 
+![Your GitHub stats](https://github-readme-stats.vercel.app/api?username=zahiraIi&show_icons=true&theme=dark)
+
+![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=zahiraIi&theme=dark)
 
