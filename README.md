@@ -13,7 +13,3 @@
 ###
 
 
-![zahirs GitHub stats](https://github-readme-stats.vercel.app/api?username=zahiraIi&show_icons=true&theme=default&hide_border=true&count_private=true)
-
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=zahiraIi&theme=default&hide_border=true)
-
