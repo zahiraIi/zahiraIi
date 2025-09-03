@@ -12,7 +12,7 @@
 
 ###
 
-![Metrics](https://metrics.lecoq.io/yourusername?template=classic&base.header=0&base.activity=0&base.community=0&base.repositories=0&base.metadata=0&activity=1&activity.limit=5&activity.days=14&activity.filter=all&activity.visibility=all&activity.timestamps=false&config.timezone=America%2FNew_York)
+![Metrics](https://metrics.lecoq.io/zahiraIi?template=classic&base.header=0&base.activity=0&base.community=0&base.repositories=0&base.metadata=0&activity=1&activity.limit=5&activity.days=14&activity.filter=all&activity.visibility=all&activity.timestamps=false&config.timezone=America%2FNew_York)
 
 ![GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=zahiraIi&theme=dark)
 
