@@ -4,8 +4,6 @@
 <div align="center">
     
   embedded systems SWE @ [Atmosense](https://atmosenseinc.com/)
-<div align="center">
-  [website](https://www.zahiral1.com/)
-  
+
   
   
