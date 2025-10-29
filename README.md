@@ -3,7 +3,8 @@
   ### cog sci w/ specialization in machine learning and neural computation @ UCSD </div>
 <div align="center">
     
-  ml & swe | embedded systems SWE @ [Atmosense](https://atmosenseinc.com/)
+  embedded systems SWE @ [Atmosense](https://atmosenseinc.com/)
+  [website](https://www.zahiral1.com/)
   
   
   
