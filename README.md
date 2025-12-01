@@ -1,6 +1,6 @@
 <div align="center">
     
-  ### Cog sci w/ Specialization in Machine Learning and Neural Computation @ UCSD </div>
+  ### Cog Sci w/ Specialization in Machine Learning and Neural Computation @ UCSD </div>
 <div align="center">
     
   Embedded Systems SWE @ [Atmosense](https://atmosenseinc.com/)
