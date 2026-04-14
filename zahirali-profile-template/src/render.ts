@@ -308,13 +308,82 @@ export const main = (props: Props & Main) => {
 			block-size: calc(var(--size-dot) * 1px);
 			border: calc(var(--size-dot) * 0.075 * 1px) solid var(--color-dot-border);
 			border-radius: calc(var(--size-dot) * 0.15 * 1px);
-			will-change: transform;
+			will-change: box-shadow, filter;
+
+			animation-name: contrib-dot-glow;
+			animation-duration: 2.8s;
+			animation-timing-function: ease-in-out;
+			animation-iteration-count: infinite;
+			animation-delay: calc(var(--dot-i, 0) * 55ms);
 		}
-		.dot--0 { background-color: var(--color-dot-bg-0); }
-		.dot--1 { background-color: var(--color-dot-bg-1); }
-		.dot--2 { background-color: var(--color-dot-bg-2); }
-		.dot--3 { background-color: var(--color-dot-bg-3); }
-		.dot--4 { background-color: var(--color-dot-bg-4); }
+		.dot--0 {
+			background-color: var(--color-dot-bg-0);
+			animation: none;
+			box-shadow: none;
+			filter: none;
+		}
+		.dot--1 {
+			background-color: var(--color-dot-bg-1);
+			animation-name: contrib-dot-glow;
+		}
+		.dot--2 {
+			background-color: var(--color-dot-bg-2);
+			animation-name: contrib-dot-glow-mid;
+		}
+		.dot--3 {
+			background-color: var(--color-dot-bg-3);
+			animation-name: contrib-dot-glow-mid;
+		}
+		.dot--4 {
+			background-color: var(--color-dot-bg-4);
+			animation-name: contrib-dot-glow-bright;
+			animation-duration: 2.3s;
+		}
+
+		@keyframes contrib-dot-glow {
+			0%,
+			100% {
+				filter: brightness(1);
+				box-shadow: 0 0 4px 0 color-mix(in srgb, var(--color-text) 22%, transparent);
+			}
+			50% {
+				filter: brightness(1.12);
+				box-shadow: 0 0 12px 2px color-mix(in srgb, var(--color-text) 50%, transparent);
+			}
+		}
+		@keyframes contrib-dot-glow-mid {
+			0%,
+			100% {
+				filter: brightness(1);
+				box-shadow: 0 0 5px 1px color-mix(in srgb, var(--color-text) 30%, transparent);
+			}
+			50% {
+				filter: brightness(1.18);
+				box-shadow: 0 0 16px 3px color-mix(in srgb, var(--color-text) 58%, transparent);
+			}
+		}
+		@keyframes contrib-dot-glow-bright {
+			0%,
+			100% {
+				filter: brightness(1);
+				box-shadow: 0 0 6px 1px color-mix(in srgb, var(--color-text) 40%, transparent);
+			}
+			50% {
+				filter: brightness(1.22);
+				box-shadow: 0 0 20px 5px color-mix(in srgb, var(--color-text) 72%, transparent);
+			}
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.year__days .dot {
+				animation: none !important;
+				filter: none !important;
+				box-shadow: 0 0 6px 1px color-mix(in srgb, var(--color-text) 28%, transparent) !important;
+			}
+			.dot--0 {
+				box-shadow: none !important;
+			}
+		}
 	`;
 
   const format = (date: Date) =>
@@ -328,7 +397,10 @@ export const main = (props: Props & Main) => {
     i == 0 ? format(new Date()) : new Date(props.years[i].from).getFullYear();
 
   const days = (days: Year['days']) =>
-    days.map((level) => `<div class="dot dot--${level}"></div>`).join('');
+    days.map(
+      (level, i) =>
+        `<div class="dot dot--${level}" style="--dot-i: ${i}"></div>`
+    ).join('');
 
   const html = /* html */ `
 		<main class="wrapper grid">
