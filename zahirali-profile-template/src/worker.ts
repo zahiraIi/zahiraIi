@@ -80,7 +80,10 @@ function buildSvg(
     return fallback({ height: 180, width: 420, theme });
   }
   if (section === 'main') {
-    const years = data.years.slice(0, MAX_YEARS);
+    const years = (data.years ?? []).slice(0, MAX_YEARS);
+    if (years.length === 0) {
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="40"><text x="8" y="24" fill="#0ea5e9">Run pnpm stats (needs API_TOKEN_GITHUB) and redeploy.</text></svg>`;
+    }
     const options = {
       dots: {
         rows: 6,
@@ -114,43 +117,58 @@ function buildSvg(
 
 const worker: ExportedHandler = {
   async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    let section = '';
-    let theme: Theme = 'light';
-    let linkIndex = 0;
+    try {
+      const url = new URL(request.url);
+      let section = '';
+      let theme: Theme = 'light';
+      let linkIndex = 0;
 
-    const fromPath = parsePath(url.pathname);
-    if (fromPath) {
-      section = fromPath.section;
-      theme = fromPath.theme;
-      linkIndex = fromPath.linkIndex;
-    } else {
-      const { searchParams } = url;
-      theme = (searchParams.get('theme') ?? 'light') as Theme;
-      if (!isTheme(theme)) theme = 'light';
-      section = searchParams.get('section') ?? '';
-      linkIndex = Number(searchParams.get('i')) || 0;
-    }
-
-    if (!section) {
-      section = 'main';
-    }
-
-    const location = {
-      city: (request.cf?.city || '') as string,
-      country: (request.cf?.country || '') as string
-    };
-
-    const content = buildSvg(section, theme, linkIndex, location);
-
-    return new Response(content, {
-      headers: {
-        'content-type': 'image/svg+xml',
-        'cache-control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        pragma: 'no-cache',
-        expires: '0'
+      const fromPath = parsePath(url.pathname);
+      if (fromPath) {
+        section = fromPath.section;
+        theme = fromPath.theme;
+        linkIndex = fromPath.linkIndex;
+      } else {
+        const { searchParams } = url;
+        theme = (searchParams.get('theme') ?? 'light') as Theme;
+        if (!isTheme(theme)) theme = 'light';
+        section = searchParams.get('section') ?? '';
+        linkIndex = Number(searchParams.get('i')) || 0;
       }
-    });
+
+      if (!section) {
+        section = 'main';
+      }
+
+      const location = {
+        city: (request.cf?.city || '') as string,
+        country: (request.cf?.country || '') as string
+      };
+
+      const content = buildSvg(section, theme, linkIndex, location);
+
+      return new Response(content, {
+        headers: {
+          'content-type': 'image/svg+xml',
+          'cache-control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          pragma: 'no-cache',
+          expires: '0'
+        }
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      const safe = msg.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c] as string));
+      return new Response(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="520" height="48"><text x="8" y="28" fill="#dc2626">Worker error: ${safe}</text></svg>`,
+        {
+          status: 200,
+          headers: {
+            'content-type': 'image/svg+xml',
+            'cache-control': 'no-store'
+          }
+        }
+      );
+    }
   }
 };
 

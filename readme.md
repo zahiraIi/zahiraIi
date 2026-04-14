@@ -1,7 +1,8 @@
 <!--
-  Worker: https://github-profile-readme.zahiral1.workers.dev
-  Images use path URLs (/r7/...) so GitHub’s Camo proxy does not break ?section=&theme= query strings.
-  Bump r7 → r8 in paths when you need a cache refresh.
+  Worker: https://github-profile-readme.zahiral1.workers.dev/r7/main/light (must match YOUR deploy).
+  If you see 404 from *.workers.dev: the hostname is https://<name-from-wrangler.toml>.<your-account-subdomain>.workers.dev
+  Copy it from Cloudflare → Workers → github-profile-readme → Triggers, or from the end of `pnpm run deploy`.
+  Path URLs (/r7/...) avoid Camo issues with query strings. Bump r7 → r8 to bust caches.
 -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-readme.zahiral1.workers.dev/r7/top/dark">
