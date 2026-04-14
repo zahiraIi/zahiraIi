@@ -20,6 +20,10 @@ function escapeXmlTextChar(c: string): string {
   }
 }
 
+function escapeXmlText(s: string): string {
+  return [...s].map(escapeXmlTextChar).join('');
+}
+
 interface Props {
   width?: number;
   height: number;
@@ -142,7 +146,6 @@ export const shared = /* css */ `
 	}
 
 	.fade-in {
-		will-change: opacity;
 		animation-name: fade-in;
 		animation-fill-mode: both;
 		animation-duration: var(--duration, var(--default-duration));
@@ -221,13 +224,12 @@ export const main = (props: Props & Main) => {
 			font-weight: 300;
 			text-align: right;
 		}
-		.intro span {
-			contain: content;
-			--duration: 420ms;
-			--delay: calc(var(--animate-in-copy-delay) + var(--i) * 4ms);
+		.intro__text {
+			--delay: var(--animate-in-copy-delay);
+			--duration: 0.55s;
 		}
 		@media (prefers-reduced-motion: reduce) {
-			.intro span {
+			.intro__text {
 				opacity: 1 !important;
 				animation: none !important;
 			}
@@ -261,9 +263,6 @@ export const main = (props: Props & Main) => {
 			contain: strict;
 			inline-size: calc(var(--_w) * 1px);
 			block-size: calc(var(--_h) * 1px);
-			will-change: transform;
-			backface-visibility: hidden;
-			transform: translateZ(0);
 			opacity: 1;
 
 			animation-name: scroll;
@@ -274,10 +273,16 @@ export const main = (props: Props & Main) => {
 		}
 		@keyframes scroll {
 			0% {
-				transform: translateX(60px);
+				transform: translate3d(60px, 0, 0);
 			}
 			100% {
-				transform: translateX(calc(-100% + 100cqw));
+				transform: translate3d(calc(-100% + 100cqw), 0, 0);
+			}
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.years {
+				animation: none;
+				transform: translate3d(0, 0, 0);
 			}
 		}
 
@@ -311,81 +316,21 @@ export const main = (props: Props & Main) => {
 			block-size: calc(var(--size-dot) * 1px);
 			border: calc(var(--size-dot) * 0.075 * 1px) solid var(--color-dot-border);
 			border-radius: calc(var(--size-dot) * 0.15 * 1px);
-			will-change: box-shadow, filter;
-
-			animation-name: contrib-dot-glow;
-			animation-duration: 1.35s;
-			animation-timing-function: ease-in-out;
-			animation-iteration-count: infinite;
-			animation-delay: calc(var(--dot-i, 0) * 26ms);
 		}
 		.dot--0 {
 			background-color: var(--color-dot-bg-0);
-			animation: none;
-			box-shadow: none;
-			filter: none;
 		}
 		.dot--1 {
 			background-color: var(--color-dot-bg-1);
-			animation-name: contrib-dot-glow;
 		}
 		.dot--2 {
 			background-color: var(--color-dot-bg-2);
-			animation-name: contrib-dot-glow-mid;
 		}
 		.dot--3 {
 			background-color: var(--color-dot-bg-3);
-			animation-name: contrib-dot-glow-mid;
 		}
 		.dot--4 {
 			background-color: var(--color-dot-bg-4);
-			animation-name: contrib-dot-glow-bright;
-			animation-duration: 1.1s;
-		}
-
-		@keyframes contrib-dot-glow {
-			0%,
-			100% {
-				filter: brightness(1);
-				box-shadow: 0 0 4px 0 color-mix(in srgb, var(--color-text) 22%, transparent);
-			}
-			50% {
-				filter: brightness(1.12);
-				box-shadow: 0 0 12px 2px color-mix(in srgb, var(--color-text) 50%, transparent);
-			}
-		}
-		@keyframes contrib-dot-glow-mid {
-			0%,
-			100% {
-				filter: brightness(1);
-				box-shadow: 0 0 5px 1px color-mix(in srgb, var(--color-text) 30%, transparent);
-			}
-			50% {
-				filter: brightness(1.18);
-				box-shadow: 0 0 16px 3px color-mix(in srgb, var(--color-text) 58%, transparent);
-			}
-		}
-		@keyframes contrib-dot-glow-bright {
-			0%,
-			100% {
-				filter: brightness(1);
-				box-shadow: 0 0 6px 1px color-mix(in srgb, var(--color-text) 40%, transparent);
-			}
-			50% {
-				filter: brightness(1.22);
-				box-shadow: 0 0 20px 5px color-mix(in srgb, var(--color-text) 72%, transparent);
-			}
-		}
-
-		@media (prefers-reduced-motion: reduce) {
-			.year__days .dot {
-				animation: none !important;
-				filter: none !important;
-				box-shadow: 0 0 6px 1px color-mix(in srgb, var(--color-text) 28%, transparent) !important;
-			}
-			.dot--0 {
-				box-shadow: none !important;
-			}
 		}
 	`;
 
@@ -400,20 +345,12 @@ export const main = (props: Props & Main) => {
     i == 0 ? format(new Date()) : new Date(props.years[i].from).getFullYear();
 
   const days = (days: Year['days']) =>
-    days.map(
-      (level, i) =>
-        `<div class="dot dot--${level}" style="--dot-i: ${i}"></div>`
-    ).join('');
+    days.map((level) => `<div class="dot dot--${level}"></div>`).join('');
 
   const html = /* html */ `
 		<main class="wrapper grid">
 			<article class="intro">
-				<p>${BODY_COPY.split('')
-          .map(
-            (c, i) =>
-              `<span class="fade-in" style="--i: ${i};">${escapeXmlTextChar(c)}</span>`
-          )
-          .join('')}</p>
+				<p class="intro__text fade-in">${escapeXmlText(BODY_COPY)}</p>
 			</article>
 			<article class="graph">
 				<div class="years" style="--w: ${props.length}; --h: ${props.sizes[0][1]};">
@@ -536,28 +473,10 @@ export const link = (props: Props & { index: number }) => (label: string) => {
 			align-items: center;
 			gap: 3px;
 		}
-		.link__label {
-			animation-delay: ${Math.random() * 10}s;
-		}
 		.link__arrow {
 			font-size: 0.75em;
 			position: relative;
 			inset-block-start: 0.1em;
-			animation-name: rotate;
-			animation-duration: 5s;
-			animation-timing-function: ease-in-out;
-			animation-iteration-count: infinite;
-			animation-delay: ${Math.random() * 5}s;
-		}
-
-		@keyframes rotate {
-			0% {
-				transform: rotate(0deg);
-			}
-			10%,
-			100% {
-				transform: rotate(360deg);
-			}
 		}
 	`;
 
@@ -602,10 +521,9 @@ export const fallback = (props: Props & { width: number }) => {
 			font-weight: 300;
 			text-align: right;
 		}
-		.intro span {
-			contain: content;
-			--duration: 420ms;
-			--delay: calc(var(--animate-in-contributions-delay) + var(--i) * 4ms);
+		.intro__text {
+			--delay: var(--animate-in-contributions-delay);
+			--duration: 0.55s;
 		}
 
 		.hint {
@@ -615,17 +533,19 @@ export const fallback = (props: Props & { width: number }) => {
 			font-size: 10px;
 			font-style: italic;
 		}
+		@media (prefers-reduced-motion: reduce) {
+			.intro__text,
+			.hint {
+				opacity: 1 !important;
+				animation: none !important;
+			}
+		}
 	`;
 
   const html = /* html */ `
 		<main class="wrapper">
 			<div class="intro">
-				<p>${BODY_COPY.split('')
-          .map(
-            (c, i) =>
-              `<span class="fade-in" style="--i: ${i};">${escapeXmlTextChar(c)}</span>`
-          )
-          .join('')}</p>
+				<p class="intro__text fade-in">${escapeXmlText(BODY_COPY)}</p>
 				<p class="hint fade-in">— I'm all for the foxy browser, but try Chrome/Safari for this one!</p>
 			</div>
 		</main>
