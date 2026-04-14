@@ -215,13 +215,16 @@ export const main = (props: Props & Main) => {
 		.intro {
 			contain: content;
 			grid-area: 1 / 1 / span 1 / span 6;
+			justify-self: stretch;
+			inline-size: 100%;
 			font-size: 18px;
 			font-weight: 300;
+			text-align: right;
 		}
 		.intro span {
 			contain: content;
-			--duration: 980ms;
-			--delay: calc(var(--animate-in-copy-delay) + var(--i) * 10ms);
+			--duration: 420ms;
+			--delay: calc(var(--animate-in-copy-delay) + var(--i) * 4ms);
 		}
 		@media (prefers-reduced-motion: reduce) {
 			.intro span {
@@ -265,9 +268,9 @@ export const main = (props: Props & Main) => {
 
 			animation-name: scroll;
 			animation-timing-function: linear;
-			animation-duration: calc(30s + (var(--_w) * 0.06s));
+			animation-duration: calc(14s + (var(--_w) * 0.028s));
 			animation-fill-mode: both;
-			animation-delay: 2s;
+			animation-delay: 0.8s;
 		}
 		@keyframes scroll {
 			0% {
@@ -311,10 +314,10 @@ export const main = (props: Props & Main) => {
 			will-change: box-shadow, filter;
 
 			animation-name: contrib-dot-glow;
-			animation-duration: 2.8s;
+			animation-duration: 1.35s;
 			animation-timing-function: ease-in-out;
 			animation-iteration-count: infinite;
-			animation-delay: calc(var(--dot-i, 0) * 55ms);
+			animation-delay: calc(var(--dot-i, 0) * 26ms);
 		}
 		.dot--0 {
 			background-color: var(--color-dot-bg-0);
@@ -337,7 +340,7 @@ export const main = (props: Props & Main) => {
 		.dot--4 {
 			background-color: var(--color-dot-bg-4);
 			animation-name: contrib-dot-glow-bright;
-			animation-duration: 2.3s;
+			animation-duration: 1.1s;
 		}
 
 		@keyframes contrib-dot-glow {
@@ -597,11 +600,12 @@ export const fallback = (props: Props & { width: number }) => {
 		.intro {
 			font-size: 22px;
 			font-weight: 300;
+			text-align: right;
 		}
 		.intro span {
 			contain: content;
-			--duration: 980ms;
-			--delay: calc(var(--animate-in-contributions-delay) + var(--i) * 10ms);
+			--duration: 420ms;
+			--delay: calc(var(--animate-in-contributions-delay) + var(--i) * 4ms);
 		}
 
 		.hint {
