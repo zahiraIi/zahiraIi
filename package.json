@@ -1,0 +1,13 @@
+{
+  "name": "zahiraIi",
+  "private": true,
+  "description": "GitHub profile repo; Cloudflare Worker for readme SVGs is in zahirali-profile-template/",
+  "scripts": {
+    "deploy": "pnpm -C zahirali-profile-template run deploy",
+    "stats": "pnpm -C zahirali-profile-template run stats",
+    "start": "pnpm -C zahirali-profile-template run start",
+    "worker:install": "pnpm install -C zahirali-profile-template",
+    "types": "pnpm -C zahirali-profile-template run types",
+    "lint": "pnpm -C zahirali-profile-template run lint"
+  }
+}
