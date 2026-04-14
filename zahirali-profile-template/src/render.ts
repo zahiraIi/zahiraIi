@@ -34,22 +34,22 @@ const svg = (styles: string, html: string, attributes: Attributes) => {
 
 export const shared = /* css */ `
 	:root {
-		/* Light / sky blue (text + contribution heatmap) */
-		--color-text-light: #0284c7;
+		/* Light / sky blue — same tokens for body text, links, and heatmap */
+		--color-text-light: #0ea5e9;
 		--color-dot-bg-0-light: #f0f9ff;
-		--color-dot-bg-1-light: #bae6fd;
-		--color-dot-bg-2-light: #7dd3fc;
-		--color-dot-bg-3-light: #38bdf8;
-		--color-dot-bg-4-light: #0ea5e9;
-		--color-dot-border-light: rgb(3 105 161 / 0.12);
+		--color-dot-bg-1-light: #e0f2fe;
+		--color-dot-bg-2-light: #bae6fd;
+		--color-dot-bg-3-light: #7dd3fc;
+		--color-dot-bg-4-light: #38bdf8;
+		--color-dot-border-light: rgb(14 165 233 / 0.18);
 
-		--color-text-dark: #7dd3fc;
-		--color-dot-bg-0-dark: #0f172a;
-		--color-dot-bg-1-dark: #075985;
+		--color-text-dark: #bae6fd;
+		--color-dot-bg-0-dark: #334155;
+		--color-dot-bg-1-dark: #0c4a6e;
 		--color-dot-bg-2-dark: #0369a1;
-		--color-dot-bg-3-dark: #0284c7;
-		--color-dot-bg-4-dark: #38bdf8;
-		--color-dot-border-dark: rgb(125 211 252 / 0.16);
+		--color-dot-bg-3-dark: #0ea5e9;
+		--color-dot-bg-4-dark: #7dd3fc;
+		--color-dot-border-dark: rgb(186 230 253 / 0.22);
 
 		/* Initial animation offset... */
 		--default-delay: 1s;
@@ -148,34 +148,10 @@ export const shared = /* css */ `
 		}
 	}
 
+	/* Solid sky — gradient+transparent fill made some text look darker than links */
 	.shine {
-		background-color: var(--color-text);
-		background-image: linear-gradient(-75deg,
-			rgb(0 0 0 / 0) 0%,
-			rgb(186 230 253 / 0.35) 15%,
-			rgb(0 0 0 / 0) 25%
-		);
-		background-size: 200%;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		text-fill-color: transparent;
-
-		animation-name: shine;
-		animation-duration: 14s;
-		animation-iteration-count: infinite;
-	}
-
-	@keyframes shine {
-		0% {
-			background-position: 200%;
-		}
-		10% {
-			background-position: 0%;
-		}
-		to {
-			background-position: 0%;
-		}
+		color: var(--color-text);
+		-webkit-text-fill-color: currentColor;
 	}
 `;
 
