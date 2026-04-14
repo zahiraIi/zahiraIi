@@ -2,7 +2,7 @@ import type { Year } from './worker';
 
 const BP_MEDIUM = 550;
 const BP_LARGE = 700;
-const BODY_COPY = `I'm Zahir, sophomore at UCSD studying Cog Sci w/ a Specialization in Machine Learning and Neural Computation.`;
+const BODY_COPY = `I'm Zahir. Machine Learning & Software Engineer.`;
 
 interface Props {
   width?: number;
@@ -34,21 +34,22 @@ const svg = (styles: string, html: string, attributes: Attributes) => {
 
 export const shared = /* css */ `
 	:root {
-		--color-text-light: #255DF6;
-		--color-dot-bg-0-light: #EBEDF0;
-		--color-dot-bg-1-light: #A7BEFB;
-		--color-dot-bg-2-light: #628BF9;
-		--color-dot-bg-3-light: #4071F7;
-		--color-dot-bg-4-light: #255DF6;
-		--color-dot-border-light: rgb(0 0 0 / 0.06);
+		/* Light / sky blue (text + contribution heatmap) */
+		--color-text-light: #0284c7;
+		--color-dot-bg-0-light: #f0f9ff;
+		--color-dot-bg-1-light: #bae6fd;
+		--color-dot-bg-2-light: #7dd3fc;
+		--color-dot-bg-3-light: #38bdf8;
+		--color-dot-bg-4-light: #0ea5e9;
+		--color-dot-border-light: rgb(3 105 161 / 0.12);
 
-		--color-text-dark: #255DF6;
-		--color-dot-bg-0-dark: #171B21;
-		--color-dot-bg-1-dark: #152A62;
-		--color-dot-bg-2-dark: #2048B3;
-		--color-dot-bg-3-dark: #1951EB;
-		--color-dot-bg-4-dark: #0048FF;
-		--color-dot-border-dark: rgb(0 0 0 / 0.06);
+		--color-text-dark: #7dd3fc;
+		--color-dot-bg-0-dark: #0f172a;
+		--color-dot-bg-1-dark: #075985;
+		--color-dot-bg-2-dark: #0369a1;
+		--color-dot-bg-3-dark: #0284c7;
+		--color-dot-bg-4-dark: #38bdf8;
+		--color-dot-border-dark: rgb(125 211 252 / 0.16);
 
 		/* Initial animation offset... */
 		--default-delay: 1s;
@@ -151,7 +152,7 @@ export const shared = /* css */ `
 		background-color: var(--color-text);
 		background-image: linear-gradient(-75deg,
 			rgb(0 0 0 / 0) 0%,
-			rgb(255 255 255 / 0.18) 15%,
+			rgb(186 230 253 / 0.35) 15%,
 			rgb(0 0 0 / 0) 25%
 		);
 		background-size: 200%;
