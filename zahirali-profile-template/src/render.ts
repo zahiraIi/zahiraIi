@@ -4,6 +4,22 @@ const BP_MEDIUM = 550;
 const BP_LARGE = 700;
 const BODY_COPY = `I'm Zahir. Machine Learning & Software Engineer.`;
 
+/** SVG/XML text nodes: bare & < > break the document (and Camo may parse <img> inside CSS). */
+function escapeXmlTextChar(c: string): string {
+  switch (c) {
+    case '&':
+      return '&amp;';
+    case '<':
+      return '&lt;';
+    case '>':
+      return '&gt;';
+    case '"':
+      return '&quot;';
+    default:
+      return c;
+  }
+}
+
 interface Props {
   width?: number;
   height: number;
@@ -25,7 +41,7 @@ const svg = (styles: string, html: string, attributes: Attributes) => {
 	<svg xmlns="http://www.w3.org/2000/svg" fill="none" ${attr(attributes)}>
 		<foreignObject width="100%" height="100%">
 			<div xmlns="http://www.w3.org/1999/xhtml">
-				<style>${styles}</style>
+				<style><![CDATA[${styles}]]></style>
 				${html}
 			</div>
 		</foreignObject>
@@ -231,7 +247,7 @@ export const main = (props: Props & Main) => {
 			grid-area: 2 / 1 / span 1 / span 6;
 		}
 
-		/* Scroll only — dual fade-in left opacity at 0 in some SVG-as-<img> / Camo paths */
+		/* Scroll only — dual fade-in left opacity at 0 in some SVG-as-image / Camo paths */
 		.years {
 			--_w: var(--w);
 			--_h: calc(var(--h) + var(--size-label-height));
@@ -318,7 +334,10 @@ export const main = (props: Props & Main) => {
 		<main class="wrapper grid">
 			<article class="intro">
 				<p>${BODY_COPY.split('')
-          .map((c, i) => `<span class="fade-in" style="--i: ${i};">${c}</span>`)
+          .map(
+            (c, i) =>
+              `<span class="fade-in" style="--i: ${i};">${escapeXmlTextChar(c)}</span>`
+          )
           .join('')}</p>
 			</article>
 			<article class="graph">
@@ -526,7 +545,10 @@ export const fallback = (props: Props & { width: number }) => {
 		<main class="wrapper">
 			<div class="intro">
 				<p>${BODY_COPY.split('')
-          .map((c, i) => `<span class="fade-in" style="--i: ${i};">${c}</span>`)
+          .map(
+            (c, i) =>
+              `<span class="fade-in" style="--i: ${i};">${escapeXmlTextChar(c)}</span>`
+          )
           .join('')}</p>
 				<p class="hint fade-in">— I'm all for the foxy browser, but try Chrome/Safari for this one!</p>
 			</div>
