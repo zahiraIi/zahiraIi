@@ -2,7 +2,7 @@ import type { Year } from './worker';
 
 const BP_MEDIUM = 550;
 const BP_LARGE = 700;
-const BODY_COPY = `I'm Zahir. Machine Learning & Software Engineer.`;
+const BODY_COPY = `Verily with hardship comes ease.`;
 
 /** SVG/XML text nodes: bare & < > break the document (and Camo may parse <img> inside CSS). */
 function escapeXmlTextChar(c: string): string {
