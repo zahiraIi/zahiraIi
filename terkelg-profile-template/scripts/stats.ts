@@ -71,12 +71,22 @@ export async function request(date: { from?: Date; to?: Date }) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json',
       'User-Agent': 'profile-readme/stats',
-      Authorization: `bearer ${token}`
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(body)
   });
-  const response = (await res.json()) as GraphQLResponse;
+
+  const text = await res.text();
+  let response: GraphQLResponse;
+  try {
+    response = JSON.parse(text) as GraphQLResponse;
+  } catch {
+    throw new Error(
+      `GitHub GraphQL returned non-JSON (HTTP ${res.status}). Often HTML from a proxy, outage, or rate limit — not your stats code. Snippet: ${text.slice(0, 180).replace(/\s+/g, ' ')}`
+    );
+  }
 
   if (!res.ok) {
     throw new Error(`GitHub GraphQL HTTP ${res.status}: ${JSON.stringify(response)}`);
