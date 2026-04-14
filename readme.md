@@ -1,12 +1,17 @@
 <!--
   Same layout as https://github.com/terkelg/terkelg — HTML in Markdown + SVG images from a Cloudflare Worker.
 
-  1) Fork or copy `terkelg-profile-template/` in this repo (cloned from terkelg/terkelg).
-  2) In `scripts/stats.ts`, set `username` to your GitHub login; add `API_TOKEN_GITHUB` and run `pnpm install` then `pnpm stats` to build `src/stats.json`.
-  3) In `src/render.ts`, edit `BODY_COPY` and any labels you want.
-  4) Deploy the Worker (`pnpm deploy` with Wrangler) and note its URL (e.g. https://YOUR_WORKER.YOUR_ACCOUNT.workers.dev).
-  5) Replace every `YOUR_PROFILE_README_WORKER_HOST` below with that host (hostname only, no https://).
-  6) Put this file in a repo named YOUR_USERNAME/YOUR_USERNAME so it shows on your GitHub profile.
+  Profile repo: create https://github.com/zahiraIi/zahiraIi and put this readme.md there.
+
+  Worker URL (you only know it after the first deploy):
+  - In terkelg-profile-template, `wrangler.toml` sets name = "github-profile-readme".
+  - Cloudflare assigns: https://github-profile-readme.<your-workers-subdomain>.workers.dev
+  - The middle segment is your account’s workers.dev subdomain (Workers & Pages → overview), not your GitHub username.
+  - Run `pnpm deploy` from that folder; Wrangler prints the exact URL. Use only the hostname (no path, no "https://") when replacing YOUR_PROFILE_README_WORKER_HOST below.
+
+  1) `pnpm install` and `pnpm stats` (needs API_TOKEN_GITHUB) to build src/stats.json.
+  2) Edit `src/render.ts` (BODY_COPY, etc.).
+  3) `pnpm deploy` (Wrangler + Cloudflare login), then paste hostname into this file.
 
   Until you replace the placeholder, images will not load.
 -->

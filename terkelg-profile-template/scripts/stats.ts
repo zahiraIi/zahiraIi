@@ -53,7 +53,7 @@ export async function request(date: { from?: Date; to?: Date }) {
 		}
 		`,
     variables: {
-      username: 'YOUR_GITHUB_USERNAME',
+      username: 'zahiraIi',
       from: date.from?.toISOString(),
       to: date.to?.toISOString()
     }
