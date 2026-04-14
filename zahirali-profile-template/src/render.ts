@@ -190,6 +190,11 @@ export const main = (props: Props & Main) => {
 			grid-template-rows: 1fr auto;
 			row-gap: 20px;
 		}
+		@-moz-document url-prefix() {
+			main.wrapper.grid {
+				display: grid !important;
+			}
+		}
 
 		.intro {
 			contain: content;
@@ -201,6 +206,12 @@ export const main = (props: Props & Main) => {
 			contain: content;
 			--duration: 980ms;
 			--delay: calc(var(--animate-in-copy-delay) + var(--i) * 10ms);
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.intro span {
+				opacity: 1 !important;
+				animation: none !important;
+			}
 		}
 
 		@media (width > ${BP_MEDIUM}px) {
@@ -220,6 +231,7 @@ export const main = (props: Props & Main) => {
 			grid-area: 2 / 1 / span 1 / span 6;
 		}
 
+		/* Scroll only — dual fade-in left opacity at 0 in some SVG-as-<img> / Camo paths */
 		.years {
 			--_w: var(--w);
 			--_h: calc(var(--h) + var(--size-label-height));
@@ -233,12 +245,13 @@ export const main = (props: Props & Main) => {
 			will-change: transform;
 			backface-visibility: hidden;
 			transform: translateZ(0);
+			opacity: 1;
 
-			animation-name: scroll, fade-in;
-			animation-timing-function: linear, ease-out;
-			animation-duration: calc(30s + (var(--_w) * 0.06s)), 2.5s;
-			animation-fill-mode: both, both;
-			animation-delay: 2s, var(--animate-in-graph-delay);
+			animation-name: scroll;
+			animation-timing-function: linear;
+			animation-duration: calc(30s + (var(--_w) * 0.06s));
+			animation-fill-mode: both;
+			animation-delay: 2s;
 		}
 		@keyframes scroll {
 			0% {
@@ -250,35 +263,30 @@ export const main = (props: Props & Main) => {
 		}
 
 		.year {
-			contain: strict;
-			content-visibility: auto;
+			contain: layout style;
 			inline-size: calc(var(--w) * 1px);
 			block-size: calc(var(--_h) * 1px);
 		}
 
 		.year__label {
-			contain: strict;
+			contain: layout style;
 			block-size: calc(var(--size-label-height) * 1px);
-			content-visibility: auto;
 			display: flex;
 			align-items: end;
 		}
 		.year__days {
-			contain: content;
 			display: grid;
 			grid-auto-flow: column;
 			grid-template-rows: repeat(var(--rows), calc(var(--size-dot) * 1px));
 			grid-auto-columns: calc(var(--size-dot) * 1px);
 			gap: calc(var(--size-dot-gap) * 1px);
 
-			contain: strict;
-			content-visibility: auto;
+			contain: layout style;
 			inline-size: calc(var(--w) * 1px);
 			block-size: calc(var(--h) * 1px);
 		}
 		.year__days .dot {
-			contain: strict;
-			content-visibility: auto;
+			contain: layout style;
 			aspect-ratio: 1;
 			inline-size: calc(var(--size-dot) * 1px);
 			block-size: calc(var(--size-dot) * 1px);
