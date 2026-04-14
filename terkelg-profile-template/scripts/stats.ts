@@ -14,8 +14,8 @@ export type Contribution = {
     | 'FOURTH_QUARTILE';
 };
 
-export type Response = {
-  data: {
+type GraphQLResponse = {
+  data?: {
     user: {
       contributionsCollection: {
         contributionCalendar: {
@@ -25,8 +25,10 @@ export type Response = {
           }[];
         };
       };
-    };
+    } | null;
   };
+  errors?: { message: string }[];
+  message?: string;
 };
 
 /**
@@ -34,6 +36,13 @@ export type Response = {
  * @param date range of contributions to fetch (Max 1 year)
  */
 export async function request(date: { from?: Date; to?: Date }) {
+  const token = process.env.API_TOKEN_GITHUB?.trim();
+  if (!token) {
+    throw new Error(
+      'API_TOKEN_GITHUB is empty. Add it to terkelg-profile-template/.env (see .env.example).'
+    );
+  }
+
   const body = {
     query: `query ($username: String!, $from: DateTime, $to: DateTime) {
 			user(login: $username) {
@@ -58,16 +67,34 @@ export async function request(date: { from?: Date; to?: Date }) {
       to: date.to?.toISOString()
     }
   };
-  const response = await fetch('https://api.github.com/graphql', {
+  const res = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'User-Agent': 'profile-readme/stats',
-      Authorization: `bearer ${process.env.API_TOKEN_GITHUB}`
+      Authorization: `bearer ${token}`
     },
     body: JSON.stringify(body)
-  }).then((res) => res.json() as Promise<Response>);
-  const calender = response.data.user.contributionsCollection.contributionCalendar;
+  });
+  const response = (await res.json()) as GraphQLResponse;
+
+  if (!res.ok) {
+    throw new Error(`GitHub GraphQL HTTP ${res.status}: ${JSON.stringify(response)}`);
+  }
+  if (response.message) {
+    throw new Error(`GitHub API: ${response.message}`);
+  }
+  if (response.errors?.length) {
+    throw new Error(response.errors.map((e) => e.message).join('; '));
+  }
+  const user = response.data?.user;
+  if (!user) {
+    throw new Error(
+      'No user in GraphQL response — check that login "zahiraIi" exists and the token has read:user (classic PAT) or user read access (fine-grained).'
+    );
+  }
+
+  const calender = user.contributionsCollection.contributionCalendar;
   const weeks = calender.weeks;
   return { weeks, contributions: calender.totalContributions };
 }
