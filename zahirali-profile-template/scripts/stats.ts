@@ -39,7 +39,7 @@ export async function request(date: { from?: Date; to?: Date }) {
   const token = process.env.API_TOKEN_GITHUB?.trim();
   if (!token) {
     throw new Error(
-      'API_TOKEN_GITHUB is empty. Add it to terkelg-profile-template/.env (see .env.example).'
+      'API_TOKEN_GITHUB is empty. Add it to zahirali-profile-template/.env (see .env.example).'
     );
   }
 

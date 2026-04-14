@@ -1,5 +1,5 @@
 <!--
-  Worker SVGs: https://github-profile-readme.zahiral1.workers.dev — redeploy Worker after changing BODY_COPY in terkelg-profile-template/src/render.ts.
+  Worker SVGs: https://github-profile-readme.zahiral1.workers.dev — redeploy Worker after changing BODY_COPY in zahirali-profile-template/src/render.ts.
 -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-readme.zahiral1.workers.dev?section=top&theme=dark">
